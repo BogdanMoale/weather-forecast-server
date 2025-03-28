@@ -1,7 +1,5 @@
 import express, { Request, Response, NextFunction } from "express";
 
-// Extend the Request interface to include the 'user' property
-
 import bodyParser from "body-parser";
 import jwt from "jsonwebtoken";
 import axios from "axios";
@@ -62,7 +60,6 @@ app.post("/login", (req: Request, res: Response) => {
   res.json({ token });
 });
 
-// Middleware to Verify Token
 function verifyToken(req: Request, res: Response, next: NextFunction) {
   const token = req.headers.authorization?.split(" ")[1];
 
@@ -84,14 +81,24 @@ async function fetchWeatherData() {
     const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${apiKey}`;
     const response = await axios.get(apiUrl);
     const weather = response.data;
+
     const timestamp = Date.now();
     const temperature = weather.main.temp;
     const itRained = weather.weather[0].main === "Rain";
 
     let existingData: any = { weatherData: { entry: [] } };
+
     if (fs.existsSync(xmlFilePath)) {
       const xmlContent = fs.readFileSync(xmlFilePath, "utf-8");
-      existingData = await parseStringPromise(xmlContent);
+      const parsedData = await parseStringPromise(xmlContent);
+
+      if (
+        parsedData &&
+        parsedData.weatherData &&
+        Array.isArray(parsedData.weatherData.entry)
+      ) {
+        existingData = parsedData;
+      }
     }
 
     existingData.weatherData.entry.unshift({
@@ -112,7 +119,33 @@ async function fetchWeatherData() {
   }
 }
 
+app.get("/getForecast", verifyToken, async (req: Request, res: Response) => {
+  const { reset } = req.query;
+  const userRole = req.user.privileges;
+
+  if (!fs.existsSync(xmlFilePath)) {
+    return res.json([]);
+  }
+
+  const xmlContent = fs.readFileSync(xmlFilePath, "utf-8");
+  const parsedData = await parseStringPromise(xmlContent);
+
+  const forecastData = parsedData.weatherData.entry.map((entry: any) => ({
+    date: parseInt(entry.date[0]),
+    weather: {
+      itRained: entry.weather[0].itRained[0] === "true",
+      temperature: parseFloat(entry.weather[0].temperature[0]),
+    },
+  }));
+
+  if (reset === "true" && userRole === "admin") {
+    fs.unlinkSync(xmlFilePath);
+  }
+
+  res.json(forecastData);
+});
+
 app.listen(port, () => {
   console.log(`Server running on http://localhost:${port}`);
-  setInterval(fetchWeatherData, 60 * 60);
+  setInterval(fetchWeatherData, 60 * 10);
 });
