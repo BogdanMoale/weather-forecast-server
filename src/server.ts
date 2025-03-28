@@ -1,10 +1,14 @@
 import express, { Request, Response, NextFunction } from "express";
 
+// Extend the Request interface to include the 'user' property
+
 import bodyParser from "body-parser";
 import jwt from "jsonwebtoken";
-
+import axios from "axios";
 import db from "./db";
 import dotenv from "dotenv";
+import fs from "fs";
+import { parseStringPromise, Builder } from "xml2js";
 
 dotenv.config();
 
@@ -23,7 +27,11 @@ declare global {
 }
 
 const app = express();
+const port = process.env.PORT || 3000;
 const secretKey = process.env.SECRET_KEY || "default_secret_key";
+const apiKey = process.env.OPENWEATHER_API_KEY || "";
+const city = process.env.CITY || "Arad";
+const xmlFilePath = process.env.XML_FILE_PATH || "database/weather.xml";
 
 app.use(bodyParser.json());
 
@@ -70,3 +78,41 @@ function verifyToken(req: Request, res: Response, next: NextFunction) {
     next();
   });
 }
+
+async function fetchWeatherData() {
+  try {
+    const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${apiKey}`;
+    const response = await axios.get(apiUrl);
+    const weather = response.data;
+    const timestamp = Date.now();
+    const temperature = weather.main.temp;
+    const itRained = weather.weather[0].main === "Rain";
+
+    let existingData: any = { weatherData: { entry: [] } };
+    if (fs.existsSync(xmlFilePath)) {
+      const xmlContent = fs.readFileSync(xmlFilePath, "utf-8");
+      existingData = await parseStringPromise(xmlContent);
+    }
+
+    existingData.weatherData.entry.unshift({
+      date: timestamp,
+      weather: [{ itRained: itRained, temperature: temperature }],
+    });
+
+    const cutoffTime = timestamp - 75 * 60 * 1000;
+    existingData.weatherData.entry = existingData.weatherData.entry.filter(
+      (entry: any) => parseInt(entry.date) >= cutoffTime
+    );
+
+    const builder = new Builder();
+    const xml = builder.buildObject(existingData);
+    fs.writeFileSync(xmlFilePath, xml);
+  } catch (error) {
+    console.error("Error fetching weather data:", error);
+  }
+}
+
+app.listen(port, () => {
+  console.log(`Server running on http://localhost:${port}`);
+  setInterval(fetchWeatherData, 60 * 60);
+});
