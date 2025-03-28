@@ -2,6 +2,7 @@ import express, { Request, Response, NextFunction } from "express";
 
 import bodyParser from "body-parser";
 import jwt from "jsonwebtoken";
+
 import db from "./db";
 import dotenv from "dotenv";
 
@@ -28,7 +29,7 @@ app.use(bodyParser.json());
 
 app.get("/", (req: Request, res: Response) => {
   res.send(
-    "Welcome to the Weather Forecast Server! Use /login to authenticate and /getForecast to fetch data."
+    "Welcome to the Weather Forecast Server! 🌤️ Use /login to authenticate and /getForecast to fetch data."
   );
 });
 
@@ -52,3 +53,20 @@ app.post("/login", (req: Request, res: Response) => {
 
   res.json({ token });
 });
+
+// Middleware to Verify Token
+function verifyToken(req: Request, res: Response, next: NextFunction) {
+  const token = req.headers.authorization?.split(" ")[1];
+
+  if (!token) {
+    return res.status(403).json({ error: "Token not provided" });
+  }
+
+  jwt.verify(token, secretKey, (err, decoded) => {
+    if (err) {
+      return res.status(401).json({ error: "Invalid token" });
+    }
+    req.user = decoded;
+    next();
+  });
+}
