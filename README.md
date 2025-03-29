@@ -7,7 +7,7 @@ A simple weather forecast API with authentication for admin and user roles.
 ### **1️⃣ Clone the Repository**
 
 ```sh
-git clone https://github.com/your-username/weather-forecast-server.git
+git clone https://github.com/BogdanMoale/weather-forecast-server.git
 cd weather-forecast-server
 ```
 
