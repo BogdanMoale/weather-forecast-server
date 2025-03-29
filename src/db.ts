@@ -11,6 +11,7 @@ db.exec(`
   )
 `);
 
+//inster admin and user if not exists
 const insertUser = db.prepare(
   "INSERT OR IGNORE INTO users (username, password, role) VALUES (?, ?, ?)"
 );

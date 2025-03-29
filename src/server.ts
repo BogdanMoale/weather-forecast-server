@@ -39,7 +39,6 @@ app.get("/", (req: Request, res: Response) => {
   );
 });
 
-// Login Route
 app.post("/login", (req: Request, res: Response) => {
   const { username, password } = req.body;
 
