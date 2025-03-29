@@ -17,7 +17,19 @@ cd weather-forecast-server
 npm install
 ```
 
-### **3️⃣ Start the Server**
+### **3️⃣ Configure Environment Variables**
+
+Create a `.env` file in the project root and add the following:
+
+```ini
+PORT=3000
+SECRET_KEY=your_secret_key_here
+OPENWEATHER_API_KEY=your_openweather_api_key
+CITY=Arad
+XML_FILE_PATH=database/weather.xml
+```
+
+### **4️⃣ Start the Server**
 
 ```sh
 npm start
