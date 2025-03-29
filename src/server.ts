@@ -7,6 +7,7 @@ import db from "./db";
 import dotenv from "dotenv";
 import fs from "fs";
 import { parseStringPromise, Builder } from "xml2js";
+import bcrypt from "bcrypt";
 
 dotenv.config();
 
@@ -43,10 +44,10 @@ app.post("/login", (req: Request, res: Response) => {
   const { username, password } = req.body;
 
   const user = db
-    .prepare("SELECT * FROM users WHERE username = ? AND password = ?")
-    .get(username, password) as User;
+    .prepare("SELECT * FROM users WHERE username = ?")
+    .get(username) as User;
 
-  if (!user) {
+  if (!user || !bcrypt.compareSync(password, user.password)) {
     return res.status(401).json({ error: "Invalid credentials" });
   }
 

@@ -1,4 +1,5 @@
 import Database from "better-sqlite3";
+import bcrypt from "bcrypt";
 
 const db = new Database("database/database.sqlite", { verbose: console.log });
 
@@ -11,11 +12,16 @@ db.exec(`
   )
 `);
 
-//inster admin and user if not exists
+const hashPassword = (password: string) => {
+  const saltRounds = 10;
+  return bcrypt.hashSync(password, saltRounds);
+};
+
+// Insert admin and user if they don't exist
 const insertUser = db.prepare(
   "INSERT OR IGNORE INTO users (username, password, role) VALUES (?, ?, ?)"
 );
-insertUser.run("admin", "admin", "admin");
-insertUser.run("user", "user", "user");
+insertUser.run("admin", hashPassword("admin"), "admin");
+insertUser.run("user", hashPassword("user"), "user");
 
 export default db;
