@@ -2,6 +2,10 @@
 
 A simple weather forecast API with authentication for admin and user roles.
 
+## 🛠️ Database
+
+The database is stored locally using SQLite. No external database setup is required.
+
 ## 🚀 Setup & Run
 
 ### **1️⃣ Clone the Repository**
