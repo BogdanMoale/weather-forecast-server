@@ -44,9 +44,7 @@ By default, the server runs on **http://localhost:3000**.
 ### **1️⃣ Login as Admin**
 
 ```sh
-curl -X POST http://localhost:3000/login \
--H "Content-Type: application/json" \
--d '{"username":"admin","password":"admin"}'
+curl -X POST http://localhost:3000/login -H "Content-Type: application/json" -d '{"username":"admin","password":"admin"}'
 ```
 
 ### **2️⃣ Login as User**
