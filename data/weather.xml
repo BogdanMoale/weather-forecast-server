@@ -1,21 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <weatherData>
   <entry>
-    <date>1743436139824</date>
-    <weather>
-      <itRained>false</itRained>
-      <temperature>10.59</temperature>
-    </weather>
-  </entry>
-  <entry>
-    <date>1743436079452</date>
-    <weather>
-      <itRained>false</itRained>
-      <temperature>10.59</temperature>
-    </weather>
-  </entry>
-  <entry>
-    <date>1743435460334</date>
+    <date>1743436343369</date>
     <weather>
       <itRained>false</itRained>
       <temperature>10.59</temperature>
