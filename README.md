@@ -69,3 +69,27 @@ curl -X GET "http://localhost:3000/getForecast" -H "Authorization: Bearer YOUR_T
 🔑 Replace `YOUR_TOKEN` with the JWT token received after login.
 
 ---
+
+## 🔄 Testing with Postman
+
+You can also test the API using **Postman**.
+
+### **1️⃣ Import Postman Collection**
+
+- The Postman collection is included in the repository.
+- Import the `weather-forecast-server.postman_collection.json` file into Postman.
+
+### **2️⃣ Perform Login**
+
+- Select the **Login as Admin** or **Login as User** request.
+- Click **Send**.
+- Copy the received token from the response.
+
+### **3️⃣ Test API Requests**
+
+- Select the request you want to test.
+- Go to the **Authorization** tab in Postman.
+- Choose **Bearer Token** and paste the copied token.
+- Click **Send** to execute the request.
+
+---
