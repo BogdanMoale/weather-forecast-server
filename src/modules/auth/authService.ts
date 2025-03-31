@@ -1,5 +1,5 @@
-import db from "../config/db";
-import { User } from "../interfaces/User";
+import db from "../../config/db";
+import { User } from "../../interfaces/User";
 
 export const loginUser = async (
   username: string,

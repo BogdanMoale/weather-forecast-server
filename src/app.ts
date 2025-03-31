@@ -1,9 +1,9 @@
 import express from "express";
 import bodyParser from "body-parser";
-import authRoutes from "./routes/authRoutes";
-import weatherRoutes from "./routes/weatherRoutes";
-import homeRoutes from "./routes/homeRoutes";
-import errorHandler from "./middleware/errorHandler";
+import authRoutes from "./modules/auth/authRoutes";
+import weatherRoutes from "./modules/weather/weatherRoutes";
+import homeRoutes from "./modules/home/homeRoutes";
+import { startWeatherDataFetchInterval } from "./modules/weather/weatherService";
 
 const app = express();
 
@@ -12,6 +12,6 @@ app.use("/", homeRoutes);
 app.use("/", weatherRoutes);
 app.use("/", authRoutes);
 
-app.use(errorHandler);
+// startWeatherDataFetchInterval();
 
 export default app;

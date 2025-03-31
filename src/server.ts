@@ -1,22 +1,20 @@
 import app from "./app";
 import { port } from "./config/env";
 import db from "./config/db";
-import { startWeatherDataFetchInterval } from "./services/weatherService";
-import { fetchWeatherData } from "./services/xmlService";
+import { startWeatherDataFetchInterval } from "./modules/weather/weatherService";
 
 async function initializeApp() {
   try {
+    // Initialize database
     const database = await db;
     console.log("Database initialized ✓");
 
     const users = await database.all("SELECT username, password FROM users");
     console.log("Existing users:", users);
 
-    //start server
+    // Start server
     app.listen(port, () => {
       console.log(`Server running on http://localhost:${port}`);
-
-      fetchWeatherData();
       startWeatherDataFetchInterval();
     });
   } catch (error) {
