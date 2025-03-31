@@ -51,7 +51,7 @@ curl -X POST http://localhost:3000/login -H "Content-Type: application/json" -d 
 ### **2️⃣ Login as User**
 
 ```sh
-curl -X POST http://localhost:3000/login -H "Content-Type: application/json" -d '{"username":"user","password":"user"}'
+curl -X POST http://localhost:3000/login -H "Content-Type: application/json" -d '{\"username\":\"user\",\"password\":\"user\"}"
 ```
 
 ### **3️⃣ Reset Forecast Data (Admin Only)**
