@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 
+//home
 export const home = (req: Request, res: Response) => {
   const responseHtml = `
     <!DOCTYPE html>

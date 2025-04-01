@@ -1,4 +1,5 @@
 import dotenv from "dotenv";
+//env config
 
 dotenv.config();
 

@@ -1,9 +1,9 @@
 import sqlite3 from "sqlite3";
 import { open } from "sqlite";
 import path from "path";
+//db config
 
 const dbPath = path.resolve(__dirname, "../../database.sqlite");
-
 export default open({
   filename: dbPath,
   driver: sqlite3.Database,

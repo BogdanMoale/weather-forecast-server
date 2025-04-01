@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { getForecastData, resetForecastData } from "../services/weatherService";
 
+//forecast
 export const getForecast = async (req: Request, res: Response) => {
   try {
     const { reset } = req.query;

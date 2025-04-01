@@ -3,6 +3,7 @@ import jwt from "jsonwebtoken";
 import { secretKey } from "../config/env";
 import { loginUser } from "../services/authService";
 
+//login
 export const login = async (req: Request, res: Response) => {
   try {
     const { username, password } = req.body;

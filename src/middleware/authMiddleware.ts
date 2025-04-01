@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import { secretKey } from "../config/env";
 
+//middleware
 export const verifyToken = (
   req: Request,
   res: Response,

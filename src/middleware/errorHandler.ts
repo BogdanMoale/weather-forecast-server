@@ -7,7 +7,7 @@ const errorHandler = (
   next: NextFunction
 ) => {
   const status = err.status || 500;
-  const message = err.message || "An unexpected error occurred";
+  const message = err.message || "Ups...An unexpected error occurred";
 
   console.error(`Exception: ${message}, stack: ${err.stack}`);
 
