@@ -8,9 +8,9 @@ import errorHandler from "./middleware/errorHandler";
 const app = express();
 
 app.use(bodyParser.json());
-app.use("/home", homeRoutes);
-app.use("/getForecast", weatherRoutes);
-app.use("/login", authRoutes);
+app.use("/", homeRoutes);
+app.use("/", weatherRoutes);
+app.use("/", authRoutes);
 
 app.use(errorHandler);
 
